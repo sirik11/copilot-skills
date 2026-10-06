@@ -23,7 +23,7 @@ Copilot loads an agent skill in stages. At the start it sees only each skill's `
 > "Copilot will decide when to use your skills based on your prompt and the skill's description."
 > — [GitHub Docs](https://docs.github.com/en/copilot/how-tos/copilot-on-github/customize-copilot/customize-cloud-agent/add-skills)
 
-So the description decides whether a skill ever runs. In [github/awesome-copilot](https://github.com/github/awesome-copilot), as of October 2, 2026, half of the 444 skills (223) say what they do without saying when to use them. `skill_lint.py` finds that and the other mistakes that quietly disable a skill.
+So the description decides whether a skill ever runs. In [github/awesome-copilot](https://github.com/github/awesome-copilot), as of October 2, 2026, this linter finds that half of the 444 skills (223) say what they do without saying when to use them. `skill_lint.py` finds that and the other mistakes that quietly disable a skill.
 
 ## Quick start
 

@@ -1,10 +1,10 @@
 # The Description Is the Skill
 
-*GitHub Copilot now loads agent skills on demand, and it decides from one short field. Half the skills in GitHub's own community collection don't say when to use them.*
+*GitHub Copilot now loads agent skills on demand, and it decides which one to load from a single short field. Most people write that field last.*
 
 ![Cover image on dark library green reading "The description is the skill." Beside it, a typed library catalog card for a skill named run-tests, with its description: Runs the test suite and fixes failures without weakening assertions. Use when tests fail, when asked to run or fix tests, or before opening a pull request. A violet stamp reads read first, and a note says the agent never opens the book unless this card fits the request.](../figures/cover-the-description-is-the-skill.png)
 
-My last article argued that most of what we put in steering files shouldn't load on every task. Task-specific know-how, like how your team adds an API endpoint or debugs a failing workflow, belongs somewhere the agent reaches for only when it needs it. In GitHub Copilot, that place is now an agent skill.
+Most teams start customizing GitHub Copilot with an instructions file that loads on every task. That works for coding standards. It works badly for task-specific know-how, like how your team adds an API endpoint or debugs a failing workflow, which should load only when the agent needs it. In Copilot, that place is now an agent skill.
 
 [Agent skills](https://docs.github.com/en/copilot/concepts/agents/about-agent-skills) work across Copilot cloud agent, Copilot code review, the Copilot CLI, the GitHub Copilot app, and agent mode in VS Code and JetBrains IDEs. They follow an [open specification](https://agentskills.io/specification), so Copilot also reads skills from `.claude/skills` and `.agents/skills`, and the same folder works in other agents that support the format.
 
@@ -22,7 +22,7 @@ What sets skills apart from custom instructions is when they load. The [Agent Sk
 2. **When the skill is picked:** the full `SKILL.md` body. The spec recommends keeping it under 5,000 tokens and 500 lines.
 3. **When the instructions point to it:** bundled files. VS Code's docs are explicit that a file the instructions don't reference won't be loaded.
 
-That's the property steering files lack. Twenty installed skills cost roughly 2,000 tokens until one of them is needed.
+That's what an always-on instructions file can't do. Twenty installed skills cost roughly 2,000 tokens until one of them is needed.
 
 ## Do skills actually make agents better?
 
@@ -31,8 +31,6 @@ On average, yes, with more caveats than the launch posts suggest.
 [SkillsBench](https://arxiv.org/abs/2602.12670) ran 87 tasks across eight domains, with and without curated skills, on 18 model and harness combinations. Curated skills raised the average pass rate from 33.9% to 50.5%. The gain depended on the configuration, from 4.1 to 25.7 percentage points, and "focused Skills with at most three modules outperform larger or exhaustive bundles."
 
 ![Bar chart on ledger paper of average pass rate on 87 SkillsBench tasks across 18 model and harness configurations: 33.9 percent without skills and 50.5 percent with curated skills, stamped plus 16.6 points. A note says the gain ranged from 4.1 to 25.7 points by model and harness.](../figures/fig2-skillsbench.png)
-
-The [paper's first version](https://arxiv.org/abs/2602.12670v1) reported two more findings worth knowing. The gain ranged from 4.5 points for software engineering tasks to 51.9 for healthcare. And skills the models wrote for themselves "provide no benefit on average." Asking Copilot to write its own skill and committing the result is not a shortcut.
 
 Skills can also hurt. A [study of skill-induced failures](https://arxiv.org/abs/2608.11888) found 307 cases where a skill made an agent fail or run less efficiently. Those failures were "rarely caused by obviously irrelevant skills"; skills that looked relevant led the agent to implement the task wrong or leave parts out. The biggest cost problem was that skills "turn validation checklists and construction recipes into mandatory work."
 
@@ -48,7 +46,7 @@ A great skill with a vague description never runs. A broad description runs on p
 
 The specification gives the pattern: what the skill does, when to use it, and the keywords that identify the task. A study titled [From Anatomy to Smells](https://arxiv.org/abs/2607.01456) checked real skills against that pattern and found 32% of descriptions missing part of it.
 
-I wrote a small linter for skills, described below, and ran it against the 444 skills in [github/awesome-copilot](https://github.com/github/awesome-copilot), GitHub's community collection. Half of them, 223, say what the skill does without saying when to use it. A typical one: "Website exploration for testing using Playwright MCP."
+I wrote a small linter for skills, described below, and ran it against the 444 skills in [github/awesome-copilot](https://github.com/github/awesome-copilot), GitHub's community collection. By the linter's count, half of them, 223, say what the skill does without saying when to use it. Some are prompts repackaged as skills and mostly run by name, where that matters less, but the pattern is common. A typical one: "Website exploration for testing using Playwright MCP."
 
 The rewrite in the figure does three things the original doesn't. It says what the skill does. It says when, in the words a developer would use. And it reaches for prompts where the connection isn't obvious, like "the build is red." The guide calls this being "pushy," and recommends writing the description as an instruction to the agent, starting with "Use this skill when."
 
@@ -88,7 +86,7 @@ Two cases need more care.
 
 **Skills from someone else.** A skill can bundle scripts, and its `allowed-tools` field can pre-approve the shell. GitHub's docs warn that doing so "can allow attacker-controlled skills or prompt injections to execute arbitrary commands in your environment." That isn't hypothetical: a [security study of 98,380 skills](https://arxiv.org/abs/2602.06547) from two community registries confirmed 157 malicious ones. Read a skill before you install it; `gh skill preview` shows its contents without installing anything.
 
-As with steering files, anything that must never happen belongs in a hook, a permission rule, or a CI check, not in instructions the model weighs.
+As with custom instructions, anything that must never happen belongs in a hook, a permission rule, or a CI check, not in instructions the model weighs.
 
 ## How do you know a skill triggers?
 
@@ -102,7 +100,7 @@ For the static checks, I wrote [skill_lint](https://github.com/sirik11/copilot-s
 
 ## The description is the skill
 
-Skills solve the problem steering files created. Detailed, task-specific know-how no longer has to sit in the context of every task. But they move the whole decision into one field of a few sentences, written for an agent that has never seen your codebase.
+Skills solve the problem always-on instruction files created. Detailed, task-specific know-how no longer has to sit in the context of every task. But they move the whole decision into one field of a few sentences, written for an agent that has never seen your codebase.
 
 Write that field first. Say what the skill does, when to use it, and the words your team types when they need it. Then test it like code.
 
