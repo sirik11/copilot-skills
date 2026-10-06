@@ -2,7 +2,7 @@
 
 *GitHub Copilot now loads agent skills on demand, and it decides from one short field. Half the skills in GitHub's own community collection don't say when to use them.*
 
-![Cover image reading "The description is the skill" beside a printed SKILL.md. The description line in its frontmatter is highlighted and circled in red with the note Copilot reads this first, and the instructions below it are faded with the note loaded only if picked.](../figures/cover-the-description-is-the-skill.png)
+![Cover image on dark library green reading "The description is the skill." Beside it, a typed library catalog card for a skill named run-tests, with its description: Runs the test suite and fixes failures without weakening assertions. Use when tests fail, when asked to run or fix tests, or before opening a pull request. A violet stamp reads read first, and a note says the agent never opens the book unless this card fits the request.](../figures/cover-the-description-is-the-skill.png)
 
 My last article argued that most of what we put in steering files shouldn't load on every task. Task-specific know-how, like how your team adds an API endpoint or debugs a failing workflow, belongs somewhere the agent reaches for only when it needs it. In GitHub Copilot, that place is now an agent skill.
 
@@ -16,7 +16,7 @@ A skill is a folder with a `SKILL.md` file in it: YAML frontmatter with a `name`
 
 What sets skills apart from custom instructions is when they load. The [Agent Skills specification](https://agentskills.io/specification) defines three stages, and [VS Code's documentation](https://code.visualstudio.com/docs/copilot/customization/agent-skills) describes Copilot following them.
 
-![Three stacked layers showing when each part of a skill loads. Always: the name and description of every installed skill, about 100 tokens each. When the skill is picked: the SKILL.md body, recommended under 5,000 tokens and 500 lines. When the instructions point to it: bundled scripts, references, and assets. A note marks the first layer as the only part paid for on every task.](../figures/fig1-what-loads-when.png)
+![A skill drawn as a library catalog card, a book, and an appendix folder. One: always, the card, meaning the name and description, about 100 tokens per skill. Two: when picked, the book, meaning the SKILL.md body, under 5,000 tokens. Three: when the book points to it, the appendix of scripts, references, and assets. A note says twenty cards cost about 2,000 tokens while the books stay on the shelf.](../figures/fig1-what-loads-when.png)
 
 1. **Always:** the name and description of every installed skill, about 100 tokens each.
 2. **When the skill is picked:** the full `SKILL.md` body. The spec recommends keeping it under 5,000 tokens and 500 lines.
@@ -30,7 +30,7 @@ On average, yes, with more caveats than the launch posts suggest.
 
 [SkillsBench](https://arxiv.org/abs/2602.12670) ran 87 tasks across eight domains, with and without curated skills, on 18 model and harness combinations. Curated skills raised the average pass rate from 33.9% to 50.5%. The gain depended on the configuration, from 4.1 to 25.7 percentage points, and "focused Skills with at most three modules outperform larger or exhaustive bundles."
 
-![Bar chart of average pass rate on 87 SkillsBench tasks across 18 model and harness configurations: 33.9 percent without skills and 50.5 percent with curated skills, a gain of 16.6 percentage points. A note says the gain ranged from 4.1 to 25.7 points depending on the configuration.](../figures/fig2-skillsbench.png)
+![Bar chart on ledger paper of average pass rate on 87 SkillsBench tasks across 18 model and harness configurations: 33.9 percent without skills and 50.5 percent with curated skills, stamped plus 16.6 points. A note says the gain ranged from 4.1 to 25.7 points by model and harness.](../figures/fig2-skillsbench.png)
 
 The [paper's first version](https://arxiv.org/abs/2602.12670v1) reported two more findings worth knowing. The gain ranged from 4.5 points for software engineering tasks to 51.9 for healthcare. And skills the models wrote for themselves "provide no benefit on average." Asking Copilot to write its own skill and committing the result is not a shortcut.
 
@@ -44,7 +44,7 @@ Because it's the only part Copilot sees when it decides. [GitHub's documentation
 
 A great skill with a vague description never runs. A broad description runs on prompts it shouldn't, which is how you get the failures above.
 
-![Red-pen markup of a skill description. The original, Helps with tests, is struck through. The rewrite reads: Runs the test suite with the project's flags and fixes failures without weakening assertions. Use when tests fail, when asked to run or fix tests, or before opening a pull request, even if the user only says the build is red. Brackets label its three parts: what it does, when to use it, and the words a developer actually types.](../figures/fig3-before-after.png)
+![Two catalog cards. The old card, Testing, says only Helps with tests, and is stamped too vague. The new card, run-tests, reads: Runs the test suite with the project's flags and fixes failures without weakening assertions. Use when tests fail, when asked to run or fix tests, or before opening a pull request, even if the user only says the build is red. Pencil marks label what it does, when to use it, and the words people type, and the card is stamped cataloged.](../figures/fig3-before-after.png)
 
 The specification gives the pattern: what the skill does, when to use it, and the keywords that identify the task. A study titled [From Anatomy to Smells](https://arxiv.org/abs/2607.01456) checked real skills against that pattern and found 32% of descriptions missing part of it.
 
@@ -80,7 +80,7 @@ description: Adds an HTTP endpoint to the API, including the route, request vali
 
 GitHub's [recommendation](https://docs.github.com/en/copilot/how-tos/copilot-on-github/customize-copilot/customize-cloud-agent/add-skills) is simple: custom instructions "for simple instructions relevant to almost every task," and skills "for more detailed instructions that Copilot should only access when relevant."
 
-![Four index cards sorting where an instruction belongs. Relevant to almost every task: custom instructions. Detailed and needed only sometimes: a skill. Has side effects, like a deploy: a skill with disable-model-invocation set to true, so it runs only when you invoke it. Must never happen: a hook or CI check, such as branch protection or a required CI check.](../figures/fig4-where-it-goes.png)
+![A wooden card catalog cabinet with four labeled drawers. Relevant to almost every task: custom instructions. Detailed, needed only sometimes: skills. Has side effects, like a deploy: skills you invoke, with disable-model-invocation set to true. Must never happen: hooks and CI checks, such as branch protection and required checks, the only locked drawer.](../figures/fig4-where-it-goes.png)
 
 Two cases need more care.
 
@@ -98,7 +98,7 @@ Then run the real test: the same task with and without the skill, comparing the 
 
 For the static checks, I wrote [skill_lint](https://github.com/sirik11/copilot-skills), a dependency-free linter for `SKILL.md` files. It flags invalid names, descriptions with no "when," near-duplicate descriptions, oversized bodies, missing bundled files, pre-approved shells, and deploy-style skills the agent can load on its own. It also reports how many tokens your skill descriptions add to every session.
 
-![Terminal output of skill_lint on four example skills. Testing is flagged for an invalid name, no trigger, and a three-word description. Two API skills are flagged for missing triggers and for overlapping descriptions, and one for first-person voice. A deploy skill is flagged for a missing script, a pre-approved shell, and side effects without disable-model-invocation.](../figures/linter-output.png)
+![Dot-matrix printout of skill_lint on four example skills. Testing is flagged for an invalid name, no trigger, and a three-word description. An API skill is flagged for no trigger, first-person voice, and overlapping another skill. A deploy skill is flagged for a missing script, a pre-approved shell, and side effects without disable-model-invocation. The invalid name and missing script are underlined as the two errors that fail the run.](../figures/linter-output.png)
 
 ## The description is the skill
 

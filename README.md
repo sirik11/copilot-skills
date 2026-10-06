@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="figures/cover-social-1200x630.png" alt="The description is the skill: a printed SKILL.md with its description line highlighted and bracketed in red, and the instructions below faded with the note loaded only if picked." width="100%">
+  <img src="figures/cover-social-1200x630.png" alt="The description is the skill: a typed library catalog card for a skill named run-tests, stamped read first, on dark library green." width="100%">
 </p>
 
 <h1 align="center">The description is the skill</h1>
@@ -35,7 +35,7 @@ python3 skill_lint.py path/to/your/repo
 ```
 
 <p align="center">
-  <img src="figures/linter-output.png" alt="Terminal output of skill_lint on four example skills: an invalid name, descriptions with no trigger, a first-person description, two overlapping descriptions, a missing script, a pre-approved shell, and a deploy skill the agent can load on its own." width="100%">
+  <img src="figures/linter-output.png" alt="Printout of skill_lint on four example skills: an invalid name, descriptions with no trigger, a first-person description, two overlapping descriptions, a missing script, a pre-approved shell, and a deploy skill the agent can load on its own." width="100%">
 </p>
 
 It finds every `SKILL.md` in the tree (`.github/skills/`, `.claude/skills/`, `.agents/skills/`, or a skills repository) and exits non-zero on errors that break a skill outright, so it can gate CI. Try it on the examples:
@@ -85,10 +85,10 @@ Its one skill, [`.github/skills/add-lint-check`](.github/skills/add-lint-check/S
 
 | | |
 | :---: | :---: |
-| <img src="figures/fig1-what-loads-when.png" alt="What loads, and when: the name and description always, the body when picked, bundled files when referenced" width="100%"><br>**What loads, and when** | <img src="figures/fig3-before-after.png" alt="A vague description struck through and rewritten with what, when, and the words people type" width="100%"><br>**Rewrite the description first** |
-| <img src="figures/fig4-where-it-goes.png" alt="Four cards: custom instructions, a skill, a skill you invoke, a hook or CI check" width="100%"><br>**Where does an instruction go?** | <img src="figures/cover-the-description-is-the-skill.png" alt="Cover" width="100%"><br>**Cover** |
+| <img src="figures/fig1-what-loads-when.png" alt="What loads, and when: the catalog card always, the book when picked, the appendix when referenced" width="100%"><br>**What loads, and when** | <img src="figures/fig3-before-after.png" alt="A vague catalog card stamped too vague, and a rewritten card marked with what, when, and the words people type" width="100%"><br>**Rewrite the card, not the book** |
+| <img src="figures/fig4-where-it-goes.png" alt="A card catalog cabinet with four drawers: custom instructions, skills, skills you invoke, and the locked drawer of hooks and CI checks" width="100%"><br>**Which drawer does it go in?** | <img src="figures/cover-the-description-is-the-skill.png" alt="Cover" width="100%"><br>**Cover** |
 
-Every figure is drawn in code by [`figures/make_figures.mjs`](figures/make_figures.mjs): hand-drawn strokes from [rough.js](https://roughjs.com/) with fixed seeds, set in Libre Baskerville, IBM Plex Mono, and Kalam (all OFL, in `figures/fonts/`), and rendered by headless Chrome. The linter needs none of this.
+Every figure is drawn in code by [`figures/make_figures.mjs`](figures/make_figures.mjs): a library card catalog, with hand-drawn strokes from [rough.js](https://roughjs.com/) and seeded typewriter jitter, set in DM Serif Display, Source Serif 4, Courier Prime, and Caveat (all OFL, in `figures/fonts/`), and rendered by headless Chrome. The linter needs none of this.
 
 ```bash
 cd figures && npm install && node make_figures.mjs
