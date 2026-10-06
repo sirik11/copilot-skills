@@ -1,0 +1,8 @@
+{
+  "name": "copilot-skills-figures",
+  "private": true,
+  "type": "module",
+  "description": "Generates the article's figures. Not needed to run the linter.",
+  "scripts": { "build": "node make_figures.mjs" },
+  "devDependencies": { "roughjs": "4.6.6" }
+}

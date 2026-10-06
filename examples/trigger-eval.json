@@ -1,0 +1,12 @@
+[
+  {"query": "add a POST /orders/{id}/cancel endpoint so clients can cancel an order", "should_trigger": true},
+  {"query": "clients need to be able to cancel orders, can you wire that up in the api", "should_trigger": true},
+  {"query": "expose the shipping estimate we calculate in billing/ over http", "should_trigger": true},
+  {"query": "we need a route that returns a user's last 10 invoices, paginated", "should_trigger": true},
+  {"query": "new endpoint for webhooks from stripe pls", "should_trigger": true},
+  {"query": "fix the error message on the login page, it says 'undefined'", "should_trigger": false},
+  {"query": "why is GET /orders slow? it takes 3 seconds on staging", "should_trigger": false},
+  {"query": "rename the /v1/users route to /v1/accounts everywhere in the frontend", "should_trigger": false},
+  {"query": "write a script that calls our orders api and exports the results to csv", "should_trigger": false},
+  {"query": "update the openapi docs to describe the existing refund endpoint", "should_trigger": false}
+]
